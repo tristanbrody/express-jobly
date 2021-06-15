@@ -20,7 +20,10 @@ describe('get routes', function () {
 		db.query.mockResolvedValueOnce({
 			rows: [{ title: 'someTitle', salary: 1000, equity: 0, company_handle: 'something' }]
 		});
-		const req = await request(app).get('/jobs');
-		expect(db.query).toHaveBeenCalledWith(`SELECT title, salary, equity, company_handle FROM jobs WHERE 1=1`);
+		const request = require('supertest');
+		const req = await request(app).get('/jobs/q/search');
+		console.log(req);
+		expect(req.statusCode).toEqual(200);
+		expect(db.query).toHaveBeenCalledWith(`SELECT id FROM jobs WHERE 1 = 1 ORDER BY title`);
 	});
 });

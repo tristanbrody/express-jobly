@@ -2,6 +2,7 @@ const jsonschema = require('jsonschema');
 const express = require('express');
 const { ensureLoggedIn, adminOnly } = require('../middleware/auth');
 const Job = require('../models/job');
+const { BadRequestError } = require('../expressError');
 
 const jobNewSchema = require('../schemas/jobNew.json');
 const jobUpdateSchema = require('../schemas/jobUpdate.json');

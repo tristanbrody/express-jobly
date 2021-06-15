@@ -29,12 +29,7 @@ class Job {
 		let selectClause = filter.selectStatement || '';
 		const whereClause = filter.whereStatement || '1 = 1';
 		if (selectClause.includes(',')) selectClause += ',';
-		const jobsRes = await db.query(`
-            SELECT ${selectClause} id
-            FROM jobs
-            WHERE ${whereClause}
-            ORDER BY title
-        `);
+		const jobsRes = await db.query(`SELECT ${selectClause}id FROM jobs WHERE ${whereClause} ORDER BY title`);
 		return jobsRes.rows;
 	}
 
