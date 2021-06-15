@@ -20,9 +20,7 @@ describe('get routes', function () {
 		db.query.mockResolvedValueOnce({
 			rows: [{ title: 'someTitle', salary: 1000, equity: 0, company_handle: 'something' }]
 		});
-		request(app).get('/jobs/1');
-		expect(db.query).toHaveBeenCalledWith(`SELECT title, salary, equity, company_handle FROM jobs WHERE id = $1`, [
-			1
-		]);
+		const req = await request(app).get('/jobs');
+		expect(db.query).toHaveBeenCalledWith(`SELECT title, salary, equity, company_handle FROM jobs WHERE 1=1`);
 	});
 });
