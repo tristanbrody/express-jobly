@@ -28,7 +28,7 @@ class Job {
 		const filter = Object.keys(filterParams).length === 0 ? '' : Job.buildWhereClause(filterParams);
 		let selectClause = filter.selectStatement || '';
 		const whereClause = filter.whereStatement || '1 = 1';
-		if (selectClause.includes(',')) selectClause += ',';
+		if (selectClause != '') selectClause += ', ';
 		const jobsRes = await db.query(`SELECT ${selectClause}id FROM jobs WHERE ${whereClause} ORDER BY title`);
 		return jobsRes.rows;
 	}

@@ -75,6 +75,15 @@ router.get('/:username', ensureLoggedIn, async function (req, res, next) {
 	}
 });
 
+router.post('/:username/jobs/:id', async function (req, res, next) {
+	try {
+		const resp = await User.applyForJob(req.params.id, req.params.username);
+		return res.json({ appliedFor: resp.jobId });
+	} catch (err) {
+		return next(err);
+	}
+});
+
 /** PATCH /[username] { user } => { user }
  *
  * Data can include:

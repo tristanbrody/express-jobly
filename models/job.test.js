@@ -42,7 +42,7 @@ describe('find all', function () {
 });
 
 describe('update', function () {
-	test.only('should update successfully', async function () {
+	test('should update successfully', async function () {
 		const id = await db.query(`SELECT id FROM jobs WHERE company_handle = 'c2' AND title='king of the peasants'`);
 		const res = await Job.update(id.rows[0].id, { title: 'emperor of the peasants' });
 	});

@@ -16,7 +16,7 @@ describe('test helper function for partial updates to a SQL row', function () {
 			expect(err instanceof BadRequestError).toBeTruthy();
 		}
 	});
-	test.only('valid request should return appropriate SQL query and list of values', async function () {
+	test('valid request should return appropriate SQL query and list of values', async function () {
 		const res = sqlForPartialUpdate({ isAdmin: 'true', firstName: 'ted' }, jsToSqlUsers);
 		expect(res).toEqual({
 			setCols: `"is_admin"=$1, "first_name"=$2`,

@@ -109,6 +109,11 @@ describe('POST /users', function () {
 			.set('authorization', `Bearer ${u4Token}`);
 		expect(resp.statusCode).toEqual(400);
 	});
+	test('applying for jobs works', async function () {
+		const jobId = await db.query(`SELECT id FROM jobs LIMIT 1`);
+		const resp = await request(app).post(`/users/u1/jobs/${jobId.rows[0].id}`);
+		expect(resp.body).toEqual({ appliedFor: expect.any(Number) });
+	});
 });
 
 /************************************** GET /users */
@@ -252,6 +257,14 @@ describe('PATCH /users/:username', () => {
 		});
 		const isSuccessful = await User.authenticate('u1', 'new-password');
 		expect(isSuccessful).toBeTruthy();
+	});
+
+	test('works: apply for job', async function () {
+		const resp = await app.post('/users/u1/jobs/1', async function (req, res, next) {
+			expect(resp.body).toEqual({
+				appliedFor: 1
+			});
+		});
 	});
 });
 

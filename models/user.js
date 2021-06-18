@@ -190,6 +190,29 @@ class User {
 
 		if (!user) throw new NotFoundError(`No user: ${username}`);
 	}
-}
 
+	static async applyForJob(jobId, username) {
+		const result = await db.query(
+			`INSERT INTO applications (username, job_id) VALUES ($1, $2) RETURNING job_id AS "jobId"`,
+			[username, jobId]
+		);
+		return result.rows[0];
+	}
+}
+// CREATE TABLE jobs (
+// 	id SERIAL PRIMARY KEY,
+// 	title TEXT NOT NULL,
+// 	salary INTEGER CHECK (salary >= 0),
+// 	equity NUMERIC CHECK (equity <= 1.0),
+// 	company_handle VARCHAR(25) NOT NULL
+// 	  REFERENCES companies ON DELETE CASCADE
+//   );
+
+//   CREATE TABLE applications (
+// 	username VARCHAR(25)
+// 	  REFERENCES users ON DELETE CASCADE,
+// 	job_id INTEGER
+// 	  REFERENCES jobs ON DELETE CASCADE,
+// 	PRIMARY KEY (username, job_id)
+//   );
 module.exports = User;

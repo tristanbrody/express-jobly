@@ -12,7 +12,7 @@ const router = new express.Router();
 //get all jobs in database (optionally can pass in filters in query string)
 router.get('/q/search', async function (req, res, next) {
 	try {
-		const jobs = await Job.findAll(req.params);
+		const jobs = await Job.findAll(req.query);
 		return res.json({ jobs });
 	} catch (err) {
 		return next(err);
@@ -56,7 +56,7 @@ router.patch('/:id', async function (req, res, next) {
 	}
 });
 
-router.delete('/id', async function (req, res, next) {
+router.delete('/:id', async function (req, res, next) {
 	try {
 		await Job.remove(req.params.id);
 		return res.json({ deleted: req.params.id });

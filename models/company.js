@@ -71,21 +71,26 @@ class Company {
 
 	static async get(handle) {
 		const companyRes = await db.query(
-			`SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
-           FROM companies
-           WHERE handle = $1`,
+			`SELECT DISTINCT c.handle, j.title AS "jobTitle", j.id AS "jobId", c.name, c.description, c.num_employees AS "numEmployees", c.logo_url AS "logoUrl" FROM companies c LEFT JOIN jobs j ON j.company_handle=c.handle WHERE handle = $1`,
 			[handle]
 		);
 
 		const company = companyRes.rows[0];
 
 		if (!company) throw new NotFoundError(`No company: ${handle}`);
-
-		return company;
+		const jobs = companyRes.rows.filter(val => [val.jobId, val.jobTitle]);
+		let uniqueJobs = [...new Set(jobs)];
+		const filteredCompanies = {
+			handle: companyRes.rows[0].handle,
+			name: companyRes.rows[0].name,
+			description: companyRes.rows[0].description,
+			logoUrl: companyRes.rows[0].logoUrl,
+			numEmployees: companyRes.rows[0].numEmployees
+		};
+		return {
+			company: filteredCompanies,
+			positions: uniqueJobs
+		};
 	}
 
 	/** Update company data with `data`.

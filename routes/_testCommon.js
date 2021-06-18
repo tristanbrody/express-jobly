@@ -3,6 +3,7 @@
 const db = require('../db.js');
 const User = require('../models/user');
 const Company = require('../models/company');
+const Job = require('../models/job');
 const { createToken } = require('../helpers/tokens');
 db.connect();
 
@@ -11,6 +12,7 @@ async function commonBeforeAll() {
 	await db.query('DELETE FROM users');
 	// noinspection SqlWithoutWhere
 	await db.query('DELETE FROM companies');
+	await db.query('DELETE FROM jobs');
 
 	await Company.create({
 		handle: 'c1',
@@ -66,6 +68,12 @@ async function commonBeforeAll() {
 		password: 'password4',
 		isAdmin: true
 	});
+	await Job.create({
+		title: 'job1',
+		salary: 10000,
+		equity: 0,
+		company_handle: 'c1'
+	});
 }
 
 async function commonBeforeEach() {
@@ -94,4 +102,3 @@ module.exports = {
 
 //TODO create a function (similar to what Paul showed me) to abstract functionality shared across tests (for example, expecting a create method or create route to work) into a function with a signature something like
 // function runTests(funcToCall, funcArgs, methodsToTest=['GET'])
-//TODO use Jest mock functionality in route tests, instead of actually interacting with DB

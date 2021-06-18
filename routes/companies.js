@@ -69,8 +69,8 @@ router.get('/q/search', async function (req, res, next) {
 
 router.get('/:handle', async function (req, res, next) {
 	try {
-		const company = await Company.get(req.params.handle);
-		return res.json({ company });
+		const result = await Company.get(req.params.handle);
+		return res.json({ result });
 	} catch (err) {
 		return next(err);
 	}
